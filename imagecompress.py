@@ -85,8 +85,6 @@ class QualitySlicer(QtWidgets.QFrame):
         self.load_file()
         self.show()
 
-        self.fileinput.setPlainText('/home/plutonergy/tmp/compare_90.jpg')
-
     def solo_mode_changer(self):
         if self.solo_mode == False:
             self.solo_mode = True
