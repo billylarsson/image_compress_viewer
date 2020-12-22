@@ -46,7 +46,6 @@ class SlicePart(QtWidgets.QLabel):
             text       = f'{kwargs["save"]} {kwargs["percent"]}%'
         )
         self.label_two.move(offset, height_taken)
-
         self.show()
 
 class QualitySlicer(QtWidgets.QFrame):
