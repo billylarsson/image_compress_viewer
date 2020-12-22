@@ -52,9 +52,10 @@ class QualitySlicer(QtWidgets.QFrame):
     def __init__(self):
         super(QualitySlicer, self).__init__()
         self.width_taken = 0
-        self.setStyleSheet('background-color: rgba(10,10,10,200) ; color: aliceblue')
+        self.stylesheets = 'background-color: rgba(10,10,10,200) ; color: aliceblue', 'background-color: rgba(50,50,50,200) ; color: aliceblue'
+        self.setStyleSheet(self.stylesheets[0])
         self.setLineWidth(0)
-        self.resize(1920, 1080)
+        self.resize(3800, 2000)
         self.button = QtWidgets.QPushButton(self, text='GO!')
         self.button.clicked.connect(self.load_file)
         self.button.setGeometry(0, 0, 70, 30)
@@ -88,8 +89,10 @@ class QualitySlicer(QtWidgets.QFrame):
     def solo_mode_changer(self):
         if self.solo_mode == False:
             self.solo_mode = True
+            self.setStyleSheet(self.stylesheets[1])
         else:
             self.solo_mode = False
+            self.setStyleSheet(self.stylesheets[0])
         self.load_file()
 
     def redraw(self, boost):
