@@ -55,7 +55,7 @@ class QualitySlicer(QtWidgets.QFrame):
         self.width_taken = 0
         self.setStyleSheet('background-color: rgba(10,10,10,200) ; color: aliceblue')
         self.setLineWidth(0)
-        self.resize(3000, 2000)
+        self.resize(1920, 1080)
         self.button = QtWidgets.QPushButton(self, text='GO!')
         self.button.clicked.connect(self.load_file)
         self.button.setGeometry(0, 0, 70, 30)
