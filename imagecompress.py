@@ -132,6 +132,7 @@ class QualitySlicer(QtWidgets.QFrame):
             pre_size = os.path.getsize(slice_path)
             croped_image.save(slice_path, format, quality=quality, method=method, optimized=True)
             post_size = os.path.getsize(slice_path)
+
             if (100 - (post_size / pre_size)*100) > 0:
                 save = 'SAVE'
             else:
