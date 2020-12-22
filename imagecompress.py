@@ -16,17 +16,18 @@ slice_path = f'{tempfile.gettempdir()}/longsnabel_use_alot_file.jpg.webp'
 class SlicePart(QtWidgets.QLabel):
     def __init__(self, place, **kwargs):
         super(SlicePart, self).__init__(place)
+        self.setStyleSheet('background-color: rgba(5,5,5,200); color: white')
         self.setLineWidth(0)
         self.pixmap = QPixmap(kwargs['path'])
         self.setPixmap(self.pixmap)
-        height_taken = 0
+        height_taken = place.height() - 120
         self.label_one = QtWidgets.QLabel(
             self,
             styleSheet = 'font: 18pt',
             alignment  = QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter,
             text       = f'{kwargs["type"]}'
         )
-        self.label_one.move(offset, offset)
+        self.label_one.move(offset, height_taken)
         height_taken += self.label_one.height() + offset
 
         self.label_two = QtWidgets.QLabel(
@@ -111,7 +112,7 @@ class QualitySlicer(QtWidgets.QFrame):
         self.quality_list = [x for x in range(1, slices+1)]
         self.quality_list = deque(self.quality_list)
         self.quality_list.rotate(self.cycle)
-
+        self.setWindowTitle(f'Original filesize: {round(os.path.getsize(image_path)/1000)}kb resolution: {pixmap.width()} x {pixmap.height()}')
         for count in range(slices):
             if self.chk_webp.isChecked() == True:
                 format = 'webp'
