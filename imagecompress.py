@@ -98,7 +98,7 @@ class QualitySlicer(QtWidgets.QFrame):
         image_path = image_path.replace('file://', '')
         image_path = image_path.strip()
 
-        if os.path.exists(image_path) == False:
+        if os.path.exists(image_path) == False or os.path.isfile(image_path) == False:
             return
 
         width_taken = 0
