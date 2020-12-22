@@ -39,13 +39,13 @@ class SlicePart(QtWidgets.QLabel):
         self.label_two.move(offset, height_taken)
         height_taken += self.label_one.height()
 
-        self.label_two = QtWidgets.QLabel(
+        self.label_three = QtWidgets.QLabel(
             self,
             styleSheet ='font: 14pt',
             alignment  = QtCore.Qt.AlignHCenter|QtCore.Qt.AlignVCenter,
             text       = f'{kwargs["save"]} {kwargs["percent"]}%'
         )
-        self.label_two.move(offset, height_taken)
+        self.label_three.move(offset, height_taken)
         self.show()
 
 class QualitySlicer(QtWidgets.QFrame):
@@ -77,10 +77,22 @@ class QualitySlicer(QtWidgets.QFrame):
         self.page_turn_shortcut_left.activated.connect(partial(self.redraw, 'plus'))
         self.page_turn_shortcut_right = QShortcut(QKeySequence("right"), self)
         self.page_turn_shortcut_right.activated.connect(partial(self.redraw, 'minus'))
+        self.solo_mode_shortcut = QShortcut(QKeySequence("down"), self)
+        self.solo_mode_shortcut.activated.connect(self.solo_mode_changer)
+        self.solo_mode = False
         self.slice_list = []
         self.cycle = 0
         self.load_file()
         self.show()
+
+        self.fileinput.setPlainText('/home/plutonergy/tmp/compare_90.jpg')
+
+    def solo_mode_changer(self):
+        if self.solo_mode == False:
+            self.solo_mode = True
+        else:
+            self.solo_mode = False
+        self.load_file()
 
     def redraw(self, boost):
         if boost == 'plus':
@@ -111,7 +123,8 @@ class QualitySlicer(QtWidgets.QFrame):
         im.thumbnail((pixmap.width(), pixmap.height()), Image.ANTIALIAS)
         self.quality_list = [x for x in range(1, slices+1)]
         self.quality_list = deque(self.quality_list)
-        self.quality_list.rotate(self.cycle)
+        if self.solo_mode == False:
+            self.quality_list.rotate(self.cycle)
         for count in range(slices):
             if self.chk_webp.isChecked() == True:
                 format = 'webp'
@@ -121,10 +134,16 @@ class QualitySlicer(QtWidgets.QFrame):
             quality = self.quality_list[count] * 10
             width, height = im.size
 
-            left = count * (width / slices)
-            top = 0
-            right = (count+1) * (width / slices)
-            bottom = height
+            if self.solo_mode == False:
+                left = count * (width / slices)
+                top = 0
+                right = (count+1) * (width / slices)
+                bottom = height
+            else:
+                left = self.cycle * (width / slices)
+                top = 0
+                right = (self.cycle+1) * (width / slices)
+                bottom = height
 
             croped_image = im.crop((left, top, right, bottom))
             croped_image.save(slice_path)
